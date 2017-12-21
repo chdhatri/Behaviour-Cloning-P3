@@ -64,7 +64,7 @@ def generator(samples, batch_size=32):
               images.append(cv2.flip(image_center,1))
               
               #measuring the angles and adjusting left and right angles
-              correction = 0.15
+              correction = 0.125
               measurement_center=float(batch_sample[3])
               measurement_left = measurement_center + correction
               measurement_right = measurement_center - correction
