@@ -1,24 +1,40 @@
 import csv
 import cv2
 import numpy as np
-
+import matplotlib.image as mpimg
 from sklearn.utils import shuffle
+
 samples = []
+datadir = 'Train_Data/'
+dataPath = datadir + 'driving_log.csv'
 
 def getSampleImagesAndMeasurements(dataPath):
-    with open(dataPath + '/driving_log.csv') as csvfile:
+    with open(dataPath) as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
             samples.append(line)
     return samples
 
 
-samples = getSampleImagesAndMeasurements('Data')
+samples = getSampleImagesAndMeasurements(dataPath)
+
+# Remove the first line, which contains the description of each data column
+samples = samples[1:]
 
 print("samples length: ",len(samples))
 
+# Split data into training and validation data
+# 80% of the data will be training, 20% for validation.
+from sklearn.model_selection import train_test_split
+train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+
+print('Train samples: {}'.format(len(train_samples)))
+print('Validation samples: {}'.format(len(validation_samples)))
+
+
 def generator(samples, batch_size=32):
     num_samples = len(samples)
+    
     while 1: # Loop forever so the generator never terminates
         shuffle(samples)
         for offset in range(0, num_samples, batch_size):
@@ -32,9 +48,9 @@ def generator(samples, batch_size=32):
               filename_right = batch_sample[2].split('/')[-1]
               
               # Construct the path
-              path_center = 'Data/IMG/' + filename_center
-              path_left = 'Data/IMG/' + filename_left
-              path_right = 'Data/IMG/' + filename_right
+              path_center = datadir + 'IMG/' + filename_center
+              path_left = datadir + 'IMG/' + filename_left
+              path_right = datadir + 'IMG/' + filename_right
               
               #Read the left, center, right images
               image_center = mpimg.imread( path_center )
@@ -45,9 +61,10 @@ def generator(samples, batch_size=32):
               images.append(image_left)
               images.append(image_right)
               # Flipping
-              images.append(cv2.flip(image,1))
+              images.append(cv2.flip(image_center,1))
               
               #measuring the angles and adjusting left and right angles
+              correction = 0.15
               measurement_center=float(batch_sample[3])
               measurement_left = measurement_center + correction
               measurement_right = measurement_center - correction
@@ -64,7 +81,8 @@ def generator(samples, batch_size=32):
 
 
 from keras.models import Sequential, Model
-from keras.layers import Flatten, Dense, Lambda, Convolution2D, Cropping2D
+from keras.layers import Flatten, Dense, Lambda, Convolution2D, Cropping2D, Dropout
+
 #Preprocess the model layers
 # 1. Normalize
 # 2. Cropping
@@ -86,21 +104,13 @@ def createModel():
     model.add(Convolution2D(64,3,3, activation='relu'))
     model.add(Flatten())
     model.add(Dense(100))
+    model.add(Dropout(0.5)) 
     model.add(Dense(50))
     model.add(Dense(10))
     model.add(Dense(1))
     return model
 
-
-
-# Split data into training and validation data
-# 80% of the data will be training, 20% for validation.
-from sklearn.model_selection import train_test_split
-train_samples, validation_samples = train_test_split(samples, test_size=0.2)
-
-print('Train samples: {}'.format(len(train_samples)))
-print('Validation samples: {}'.format(len(validation_samples)))
-
+#  Generators for training and validation data,
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 
@@ -109,6 +119,7 @@ model = createModel()
 
 # Compiling and training the model
 model.compile(loss='mse', optimizer='adam')
+
 history_object = model.fit_generator(train_generator, samples_per_epoch= \
                                      len(train_samples), validation_data=validation_generator, \
                                      nb_val_samples=len(validation_samples), nb_epoch=3, verbose=1)
