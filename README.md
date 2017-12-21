@@ -28,15 +28,15 @@ Udacity provided sample data, which was also used as part of my testing
 ---
 The goals / steps of this project are the following:
 * #### Use the simulator to collect data of good driving behavior 
-    a.  Collected data from the simualator. I tried to test the model with.
-      1. training data provided by Udacity.
-      2. Collected the data from track1 by running the car mostly positioned in the center.
-      3. Collected the data from track1 by running the car get off the center and trying to recover.
-    b. For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
+    * Collected data from the simualator. I tried to test the model with
+      * training data provided by Udacity.
+      * Collected the data from track1 by running the car mostly positioned in the center.
+      * Collected the data from track1 by running the car get off the center and trying to recover.
+    * For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
   
 * ##### Design, train and validate a model that predicts a steering angle from image data
   #### Model Architecture and Training Strategy
-    a. ###### An appropriate model architecture has been employed
+    * ###### An appropriate model architecture has been employed
     My initial approach was to use [LeNet](http://yann.lecun.com/exdb/lenet/), but it was hard to have the car inside the street with three epochs (this model could be found [here](clone.py#L81-L94)). After this, I decided to try the [nVidia Autonomous Car Group](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) model, and the car drove the complete first track after just three training epochs (this model could be found [here](model.py#L108-L123)).
 
 A model summary is as follows:
