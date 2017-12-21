@@ -13,11 +13,11 @@ The data was collected using the simulator. Collected two types of data
 Udacity provided sample data, which was also used as part of my testing
 
 ### Files Submitted : 
-* model.py (script used to create and train the model)
-* drive.py (script to drive the car - feel free to modify this file)
-* model.h5 (a trained Keras model)
-* a report writeup file (either markdown or pdf)
-* video.mp4 (a video recording of your vehicle driving autonomously around the track for at least one full lap)
+* model.py (script used to create and train the model).
+* drive.py (script to drive the car - feel free to modify this file).
+* model.h5 (a trained Keras model).
+* a report writeup file (either markdown or pdf).
+* video.mp4 (a video recording of your vehicle driving autonomously around the track for at least one full lap).
 
 
 ### Rubric
@@ -28,9 +28,9 @@ Udacity provided sample data, which was also used as part of my testing
 ---
 The goals / steps of this project are the following:
 * #### Use the simulator to collect data of good driving behavior 
-    a.  Collected data from the simualator. I tried to test the model with 
-      1. training data provided by Udacity
-      2. Collected the data from track1 by running the car mostly positioned in the center
+    a.  Collected data from the simualator. I tried to test the model with.
+      1. training data provided by Udacity.
+      2. Collected the data from track1 by running the car mostly positioned in the center.
       3. Collected the data from track1 by running the car get off the center and trying to recover.
     b. For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
   
@@ -83,8 +83,7 @@ The model used an Adam optimizer.
 
 #### 1. Solution Design Approach
 
-I used LeNet model with three epochs and used the training data provided by Udacity. On the first track, the car went straight out of track and was looping around. To fix the problem I started preprocessing the data. `Lambda` layer was introduced to normalize the input images to zero means. This step improved a little bit but was not convincing. but it didn't get to the first turn. Another `Cropping` [layer](model.py#L105) was introduced, and the first turn was almost there, but not quite.
-
-The second step was to use a more powerfull model: [nVidia Autonomous Car Group](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) The only modification was to add a new layer at the end to have a single output as it was required. This time the car did its first complete track, but there was a place in the track where it passes over the "dashed" line. More data was needed. Augmented the data by adding the same image flipped with a negative angle([lines 85 - 87](model.py#L85-L87)). In addition to that, the left and right camera images where introduced with a correction factor on the angle to help the car go back to the lane([lines 50 - 63](model.py#L50-L63)). After this process, the car continues to have the same problem with the same "dashed" line. I needed more data, but it was a good beginning.
+I started with LeNet model and used the training data provided by Udacity. On the first track, the car went straight out of track and was looping around. To fix the problem I started preprocessing the data. Added `Lambda` layer to normalize the input images to zero means. This step improved a little bit but was not convincing. As second step in preprocessing added  `Cropping`, and 'Augmentation' the data by adding the same image flipped with a negative angle.  stil the model was not convincing.
+After reading through the nVidia paper, I added the  [nVidial model: [nVidia Autonomous Car Group](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) with five convoulution layers and have a single output as it was required. This time the car almost made the whole track, but when it was about to make right turn towards the end of loop it went staright into lake.   To fix it  the left and right camera images where introduced with a correction factor of 0.125 was introduced which helped the car go back to the lane. I tried correction factors of 0.10, 0.15, 0.20, all these made the car to drift over the yello lines. 
 
 #### 2. Final Model Architecture
