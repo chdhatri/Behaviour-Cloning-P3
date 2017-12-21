@@ -10,6 +10,8 @@ The data was collected using the simulator. Collected two types of data
 1. The data was collected steering the car at the center of the road.
 2. The data was collected letting the car to steer off the road and recover back to the center.
 
+Udacity provided sample data, which was also used as part of my testing
+
 ### Files Submitted : 
 * model.py (script used to create and train the model)
 * drive.py (script to drive the car - feel free to modify this file)
@@ -25,15 +27,51 @@ The data was collected using the simulator. Collected two types of data
 ### Project Goals
 ---
 The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior 
-    a.  Collected data from the simualator provided by Udacity. I tried to test the model with 
+* #### Use the simulator to collect data of good driving behavior 
+    a.  Collected data from the simualator. I tried to test the model with 
       1. training data provided by Udacity
       2. Collected the data from track1 by running the car mostly positioned in the center
       3. Collected the data from track1 by running the car get off the center and trying to recover.
-    b. 
+    b. For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
   
-* Design, train and validate a model that predicts a steering angle from image data
-* Use the model to drive the vehicle autonomously around the first track in the simulator. The vehicle should remain on the road for an entire loop around the track.
+* ##### Design, train and validate a model that predicts a steering angle from image data
+  #### Model Architecture and Training Strategy
+    a. ###### An appropriate model architecture has been employed
+    My initial approach was to use [LeNet](http://yann.lecun.com/exdb/lenet/), but it was hard to have the car inside the street with three epochs (this model could be found [here](clone.py#L81-L94)). After this, I decided to try the [nVidia Autonomous Car Group](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) model, and the car drove the complete first track after just three training epochs (this model could be found [here](model.py#L108-L123)).
+
+A model summary is as follows:
+
+```
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+lambda_1 (Lambda)                (None, 160, 320, 3)   0           lambda_input_2[0][0]             
+____________________________________________________________________________________________________
+cropping2d_1 (Cropping2D)        (None, 90, 320, 3)    0           lambda_1[0][0]                   
+____________________________________________________________________________________________________
+convolution2d_1 (Convolution2D)  (None, 43, 158, 24)   1824        cropping2d_1[0][0]               
+____________________________________________________________________________________________________
+convolution2d_2 (Convolution2D)  (None, 20, 77, 36)    21636       convolution2d_1[0][0]            
+____________________________________________________________________________________________________
+convolution2d_3 (Convolution2D)  (None, 8, 37, 48)     43248       convolution2d_2[0][0]            
+____________________________________________________________________________________________________
+convolution2d_4 (Convolution2D)  (None, 6, 35, 64)     27712       convolution2d_3[0][0]            
+____________________________________________________________________________________________________
+convolution2d_5 (Convolution2D)  (None, 4, 33, 64)     36928       convolution2d_4[0][0]            
+____________________________________________________________________________________________________
+flatten_1 (Flatten)              (None, 8448)          0           convolution2d_5[0][0]            
+____________________________________________________________________________________________________
+dense_1 (Dense)                  (None, 100)           844900      flatten_1[0][0]                  
+____________________________________________________________________________________________________
+dense_2 (Dense)                  (None, 50)            5050        dense_1[0][0]                    
+____________________________________________________________________________________________________
+dense_3 (Dense)                  (None, 10)            510         dense_2[0][0]                    
+____________________________________________________________________________________________________
+dense_4 (Dense)                  (None, 1)             11          dense_3[0][0]                    
+====================================================================================================
+Total params: 981,819
+Trainable params: 981,819
+Non-trainable params: 0
+```
 * Summarize the results with a written report
 
 ### Dependencies
