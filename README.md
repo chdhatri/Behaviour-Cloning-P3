@@ -33,6 +33,16 @@ The goals / steps of this project are the following:
       * Collected the data from track1 by running the car mostly positioned in the center.
       * Collected the data from track1 by running the car get off the center and trying to recover.
     * For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
+    * The simulation creats training data with IMG folder with all the images and driving_log.csv. The training data,  was read from driving_log.csv. Each line of driving_log.csv corresponded to one sample. Each sample contained left, and right camera images, as well as the current driving angle, throttle, brake, and speed data.
+
+Example image from the center camera.
+![center camera][center]
+Example image from the right camera.
+![left camera][right]
+Example image from the left camera.
+![right camera][left]
+
+
   
 * ##### Design, train and validate a model that predicts a steering angle from image data
   #### Model Architecture and Training Strategy
