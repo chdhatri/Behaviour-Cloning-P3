@@ -29,9 +29,9 @@ Udacity provided sample data, which was also used as part of my testing
 The goals / steps of this project are the following:
 * #### Use the simulator to collect data of good driving behavior 
     * Collected data from the simualator. I tried to test the model with
-      * training data provided by Udacity.
-      * Collected the data from track1 by running the car mostly positioned in the center.
-      * Collected the data from track1 by running the car get off the center and trying to recover.
+     * training data provided by Udacity.
+     * Collected the data from track1 by running the car mostly positioned in the center.
+     * Collected the data from track1 by running the car get off the center and trying to recover.
     * For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
     * The simulation creats training data with IMG folder with all the images and driving_log.csv. The training data,  was read from driving_log.csv. Each line of driving_log.csv corresponded to one sample. Each sample contained left, and right camera images, as well as the current driving angle, throttle, brake, and speed data.
 
@@ -107,14 +107,12 @@ After reading through the nVidia paper, I added the  [nVidial model: [nVidia Aut
 
 These strategies resulted in a model that performed well on test track. I haven't tried on the challenge track. If time permits will try to work on the challenge track. The final dataset was my own data points, further split the data into a training set (80%) data points and a validation set  (20%) data points. The validation data for the model is pulled from the training set, but doesn't undergo any jitter. The model architecture is below.
 
-<img src="./ExampleImages/nVidia_model.png?raw=true" width="400px">
+![png](./ExampleImages/nVidia_model.png?raw=true "nVidia_model")
 
 
 ## Conclusion and Discussion
 
 This project is mostly understanding and predicting the data. Though we are using NN and CNN , its a typical regression problem predicting the continous data from the give inputs(images here). I have read through other papers where we can throw away the zero/near-zero steering angles, but as a statistician I would not prefer to throw away data unless we have any particular reason to throw away. The data seems to be normal but more concentrated around zero values. But this is expected as most of road is staright in track1.
 
- I fully plan to revisit this project when time permits and work on track 2 which is more challennging.
-
-I would also like to revisit and improve the model perfomance by more parameter tuning. Another nanodegree student achieved good model performance in a neural net with only 63 parameters. I would like to investigate more to see if we can improve performance and speed up the training but optimizing the model .
+ I fully plan to revisit this project when time permits and work on track 2 which is more challennging. I would like to investigate more to see if we can improve performance and speed up by  optimizing the model by reducing the number of paremeters.
 
