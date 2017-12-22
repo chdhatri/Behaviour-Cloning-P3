@@ -36,11 +36,11 @@ The goals / steps of this project are the following:
     * The simulation creats training data with IMG folder with all the images and driving_log.csv. The training data,  was read from driving_log.csv. Each line of driving_log.csv corresponded to one sample. Each sample contained left, and right camera images, as well as the current driving angle, throttle, brake, and speed data.
 
 Example image from the center camera.
-![jpg](./ExampleImages/center "center")
+![jpg](./ExampleImages/center.jpg "center")
 Example image from the right camera.
-![jpg](./ExampleImages/right "right")
+![jpg](./ExampleImages/right.jpg "right")
 Example image from the left camera.
-![jpg](./ExampleImages/left "left")
+![jpg](./ExampleImages/left.jpg "left")
 
 
   
