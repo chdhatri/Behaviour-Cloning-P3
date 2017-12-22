@@ -35,11 +35,17 @@ The goals / steps of this project are the following:
     * For my final model I have used the data from Step 3 as it helped me to recover from hitting the lane lines and obstacles.
     * The simulation creats training data with IMG folder with all the images and driving_log.csv. The training data,  was read from driving_log.csv. Each line of driving_log.csv corresponded to one sample. Each sample contained left, and right camera images, as well as the current driving angle, throttle, brake, and speed data.
 
-Example image from the center camera.
+### Example image from the center camera.
+
 ![jpg](./ExampleImages/center.jpg "center")
-Example image from the right camera.
+
+### Example image from the right camera.
+
 ![jpg](./ExampleImages/right.jpg "right")
-Example image from the left camera.
+
+
+### Example image from the left camera.
+
 ![jpg](./ExampleImages/left.jpg "left")
 
 
@@ -48,6 +54,7 @@ Example image from the left camera.
   #### Model Architecture and Training Strategy
     * ###### An appropriate model architecture has been employed
     My initial approach was to use [LeNet](http://yann.lecun.com/exdb/lenet/), but it was hard to have the car inside the street with three epochs (this model could be found [here](clone.py#L81-L94)). After this, I decided to try the [nVidia Autonomous Car Group](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) model, and the car drove the complete first track after just three training epochs (this model could be found [here](model.py#L108-L123)).
+
 
 A model summary is as follows:
 
@@ -96,4 +103,18 @@ The model used an Adam optimizer.
 I started with LeNet model and used the training data provided by Udacity. On the first track, the car went straight out of track and was looping around. To fix the problem I started preprocessing the data. Added `Lambda` layer to normalize the input images to zero means. This step improved a little bit but was not convincing. As second step in preprocessing added  `Cropping`, and 'Augmentation' the data by adding the same image flipped with a negative angle.  stil the model was not convincing.
 After reading through the nVidia paper, I added the  [nVidial model: [nVidia Autonomous Car Group](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) with five convoulution layers and have a single output as it was required. This time the car almost made the whole track, but when it was about to make right turn towards the end of loop it went staright into lake.   To fix it  the left and right camera images where introduced with a correction factor of 0.125 was introduced which helped the car go back to the lane. I tried correction factors of 0.10, 0.15, 0.20, all these made the car to drift over the yello lines. 
 
-#### 2. Final Model Architecture
+## Results 
+
+These strategies resulted in a model that performed well on test track. I haven't tried on the challenge track. If time permits will try to work on the challenge track. The final dataset was my own data points, further split the data into a training set (80%) data points and a validation set  (20%) data points. The validation data for the model is pulled from the training set, but doesn't undergo any jitter. The model architecture is below.
+
+<img src="./ExampleImages/nVidia_model.png?raw=true" width="400px">
+
+
+## Conclusion and Discussion
+
+This project is mostly understanding and predicting the data. Though we are using NN and CNN , its a typical regression problem predicting the continous data from the give inputs(images here). I have read through other papers where we can throw away the zero/near-zero steering angles, but as a statistician I would not prefer to throw away data unless we have any particular reason to throw away. The data seems to be normal but more concentrated around zero values. But this is expected as most of road is staright in track1.
+
+ I fully plan to revisit this project when time permits and work on track 2 which is more challennging.
+
+I would also like to revisit and improve the model perfomance by more parameter tuning. Another nanodegree student achieved good model performance in a neural net with only 63 parameters. I would like to investigate more to see if we can improve performance and speed up the training but optimizing the model .
+
